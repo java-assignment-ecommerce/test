@@ -7,13 +7,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import com.cybage.bookings.dto.OrderDto;
+import com.cybage.bookings.entity.Order1;
 import com.cybage.bookings.services.OrderService;
 
 @RestController
@@ -45,7 +41,33 @@ public class OrderController {
 	public ResponseEntity<OrderDto> getOrderByid(@PathVariable int orderId) {
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(orderService.getOrderById(orderId));
+	}
 
+	/**
+	 *This will a single order record into table*/
+	@PostMapping("/add")
+	public ResponseEntity<Order1> addInventory(@RequestBody Order1 order )
+	{
+		 return ResponseEntity.status(HttpStatus.OK).body(orderService.addOrder(order));
+		
+	}
+	/**
+	 *This will update single record using id */
+	@PutMapping("/update/{orderId}")
+	public ResponseEntity<Order1> updateOrder(@PathVariable int orderId,@RequestBody Order1 order )
+	{
+		return ResponseEntity.status(HttpStatus.OK).body(orderService.updateOrder(orderId,order));
+		
+	}
+	/**
+	 * This will delete single record of order from table
+	 * If any dependency is there then stop/revert this operation*/
+	
+	@DeleteMapping("/remove/{orderId}")
+	public ResponseEntity<String> deleteInventoryById(@PathVariable int orderId)
+	{
+		return ResponseEntity.status(HttpStatus.OK).body(orderService.deleteOrderById(orderId));
+		
 	}
 
 }
